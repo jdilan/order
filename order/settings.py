@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-frnvqz!6l!xx)bvpvy+0=ce1wpo=8p1mdf*$t3%1*!@s(@u%_u
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["127.0.0.1"]
 
 
 # Application definition
@@ -137,11 +137,11 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Kafka Configuration
 
 KAFKA_CONFIG = {
-    'bootstrap.servers': 'localhost:9092',  # Replace with your broker address
+    'bootstrap.servers': '127.0.0.1:9092',  # Replace with your broker address
     'group.id': 'my-django-group',
     'auto.offset.reset': 'earliest'
 }
 
-KAFKA_ORDER_TOPIC = 'ORDER_TOPIC'
+KAFKA_TOPIC_ORDER_NEW = 'ORDER_NEW'
 KAFKA_TOPIC_ORDER_CREATED = 'ORDER_CREATED'
 KAFKA_TOPIC_ORDER_UPDATE = 'ORDER_UPDATE'

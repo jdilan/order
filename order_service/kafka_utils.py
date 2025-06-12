@@ -29,8 +29,8 @@ consumer_order = Consumer({
 
 def consume_order_data():
     """Function to consume messages from Kafka."""
-    consumer_order.subscribe([settings.KAFKA_ORDER_TOPIC, settings.KAFKA_TOPIC_ORDER_UPDATE])
-    
+    consumer_order.subscribe([settings.KAFKA_TOPIC_ORDER_NEW, settings.KAFKA_TOPIC_ORDER_UPDATE])
+
     try:
         while True:
             msg = consumer_order.poll(1.0)  # Timeout of 1 second
@@ -47,7 +47,7 @@ def consume_order_data():
             # Convert the Kafka message back to Python Dict
             order_data = json.loads(msg.value().decode('utf-8'))
 
-            if topic == settings.KAFKA_ORDER_TOPIC:
+            if topic == settings.KAFKA_TOPIC_ORDER_NEW:
                 # Save the ORDER to the PostgreSQL database
                 # Order.objects.create(**data)
                 save_order_to_db(order_data)
@@ -59,6 +59,7 @@ def consume_order_data():
                     'status':'CREATED'
                 }
 
+                # Send order update to KAFKA BROKER
                 send_order_update(settings.KAFKA_TOPIC_ORDER_CREATED, json.dumps(order_data_update))
 
                 print(f"Order update sent to kafka: {order_data_update}")
